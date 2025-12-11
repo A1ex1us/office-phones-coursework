@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отчет</title>
+    <link href="{{ url_for('static', filename='report_result.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        {% if message %}
+        <div class="message">
+            <h1>{{ message }}</h1>
+        </div>
+        {% endif %}
+
+        <h1>Сотрудник:</h1>
+            <table>
+                <thead>
+                    <tr>
+                        {% for schema_elem in schema_staff_list[1:] %}
+                        <th>{{schema_elem}}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for staff_list in staff_list_info %}
+                        <tr>
+                            {% for staff_elem in staff_list[1:] %}
+                            <td>{{ staff_elem }}</td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <h1>Телефоны:</h1>
+            <table>
+                <thead>
+                    <tr>
+                        {% for schema_elem in schema_phones_list %}
+                        <th>{{schema_elem}}</th>
+                        {% endfor %}
+                        <th>Удалить</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for phones_list in phones_list_list %}
+                        <tr>
+                            {% for phone_elem in phones_list %}
+                            <td>{{ phone_elem }}</td>
+                            {% endfor %}
+                            <td>
+                                <form action="{{ url_for('editor_bp.delete_phone_handler',staff_id=staff_list_info[0][0], phone=phones_list[0]) }}" method="POST">
+                                <button type="submit" class="button">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        <h1>Добавить телефон:</h1>
+        <form action="{{ url_for('editor_bp.add_phone_handler', staff_id=staff_list_info[0][0]) }}" method="POST">
+            <div>
+                <label for="phone">Номер телефона:</label>
+                <input type="text" id="phone" name="phone" required>
+            </div>
+            <div>
+                <label for="money_limit">Лимит денег:</label>
+                <input type="number" id="money_limit" name="money_limit" step="0.01" required>
+            </div>
+            <button type="submit" class="button">Добавить телефон</button>
+        </form>
+
+        <h1>Редактировать сотрудника:</h1>
+        <form action="{{ url_for('editor_bp.edit_staff_handler', staff_id=staff_list_info[0][0]) }}" method="POST">
+        <div>
+            <label for="surname">Фамилия:</label>
+            <input type="text" id="surname" name="surname" value="{{ staff_list_info[0][3] }}" required>
+        </div>
+        <div>
+            <label for="address">Адрес:</label>
+            <input type="text" id="address" name="address" value="{{ staff_list_info[0][4] }}">
+        </div>
+        <div>
+            <label for="birthday">Дата рождения:</label>
+            <input type="date" id="birthday" name="birthday" value="{{ staff_list_info[0][5] }}">
+        </div>
+        <div>
+            <label for="position">Должность:</label>
+            <input type="text" id="position" name="position" value="{{ staff_list_info[0][6] }}" required>
+        </div>
+        <div>
+            <label for="hire_date">Дата найма:</label>
+            <input type="date" id="hire_date" name="hire_date" value="{{ staff_list_info[0][7] }}" required>
+        </div>
+        <div>
+            <label for="department_id">Номер отдела:</label>
+            <input type="number" id="department_id" name="department_id" value="{{ staff_list_info[0][8] }}" required>
+        </div>
+        <button type="submit" class="button">Сохранить изменения</button>
+        </form>
+
+        <p><a href="{{ url_for('main_menu_handler') }}" class="button">В главное меню</a></p>
+
+    </div>
+</body>
+</html>
