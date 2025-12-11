@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Телефоны сотрудника</title>
+    <link href="{{ url_for('static', filename='query_result.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <h1>Превышения по телефону: {{phone}}</h1>
+
+        {% if phone_exceed|length == 0 %}
+            <p>Нету превышений!</p>
+        {% else %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Телефон</th>
+                        <th>Сумма превышения</th>
+                        <th>Месяц</th>
+                        <th>Год</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exceed in phone_exceed %}
+                        <tr>
+                            <td>{{ exceed['phone'] }}</td>
+                            <td>{{ exceed['exceed_amount'] }}</td>
+                            <td>{{ exceed['exceed_month'] }}</td>
+                            <td>{{ exceed['exceed_year'] }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
+        <p><a href="{{ url_for('query_bp.query_menu_handler') }}" class="button">В меню запросов</a></p>
+        <p><a href="{{ url_for('main_menu_handler') }}" class="button">В главное меню</a></p>
+    </div>
+
+
+</body>
+</html>
